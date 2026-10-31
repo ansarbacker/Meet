@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Book a meeting with Ansar Backer, Vice President, Business Development at Cloudmon.">
+<meta property="og:title" content="Book a meeting with Ansar Backer · Cloudmon">
+<meta property="og:description" content="Pick a time that works for you. Mon–Fri, 09:00–18:00 GST.">
+<meta property="og:image" content="{{SITE}}og-image.png">
+<meta property="og:url" content="{{SITE}}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<title>Book a meeting · Ansar Backer · Cloudmon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: dark Cloudmon brand band on top, then a single-column scheduling console where each weekday is a 09:00–18:00 availability track. */
+:root{color-scheme:light;
+  --bg:#F4F6FB; --surface:#FFFFFF; --ink:#0B1020; --muted:#5B6478; --line:#DDE2EE;
+  --accent:#2B6BFF; --accent-soft:#E8EEFF; --on-accent:#FFFFFF;
+  --open:#2F8CFF; --taken:#E6E9F2; --ok:#0E9F78;
+  --band:#0A0E1F; --band-ink:#FFFFFF; --band-muted:#A9B3CC; --band-line:rgba(255,255,255,.14);
+  --grad:linear-gradient(90deg,#00BFFF 0%,#2F8CFF 50%,#7A4DFF 100%);
+  --display:"Outfit","Avenir Next","Segoe UI",Arial,sans-serif;
+  --body:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#080B17; --surface:#0F1426; --ink:#E8ECF7; --muted:#8D96AD; --line:#1E2640;
+  --accent:#5B8BFF; --accent-soft:#16204A; --on-accent:#FFFFFF;
+  --open:#3D94FF; --taken:#1A2138; --ok:#2BC79B; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#080B17; --surface:#0F1426; --ink:#E8ECF7; --muted:#8D96AD; --line:#1E2640;
+  --accent:#5B8BFF; --accent-soft:#16204A; --on-accent:#FFFFFF;
+  --open:#3D94FF; --taken:#1A2138; --ok:#2BC79B; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:880px;margin:0 auto;display:grid;gap:30px}
+
+.band{position:relative;overflow:hidden;background:var(--band);color:var(--band-ink);border-radius:16px}
+.band canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bandin{position:relative;display:grid;gap:12px;padding:28px clamp(20px,4vw,40px) 30px}
+.logo{width:200px;max-width:60%;height:auto;display:block;margin-bottom:10px}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,5vw,42px);line-height:1.08;margin:0;letter-spacing:-.01em;text-wrap:balance;max-width:18ch}
+.role{color:var(--band-muted);margin:0;font-size:15px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.fact{font-family:var(--mono);font-size:12px;border:1px solid var(--band-line);border-radius:999px;padding:5px 11px;color:var(--band-ink);background:rgba(10,14,31,.55)}
+
+section{display:grid;gap:14px}
+.step{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.step h2{font-family:var(--display);font-weight:600;font-size:20px;margin:0}
+.step .n{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.step .hint{color:var(--muted);font-size:13.5px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:4px;gap:4px;justify-self:start}
+.seg button{font:600 14px var(--body);border:0;background:transparent;color:var(--ink);padding:8px 18px;border-radius:7px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.board{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding-block:6px;overflow:hidden}
+.week{padding:12px 18px 6px}
+.week + .week{border-top:1px solid var(--line)}
+.weekhead{display:grid;grid-template-columns:96px 1fr 64px;gap:12px;align-items:end;margin-bottom:6px}
+.weeklabel{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.ticks{position:relative;height:16px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.ticks span{position:absolute;transform:translateX(-50%)}
+.ticks span:first-child{transform:none}.ticks span:last-child{transform:translateX(-100%)}
+.day{display:grid;grid-template-columns:96px 1fr 64px;gap:12px;align-items:center;width:calc(100% + 16px);border:0;background:transparent;
+  color:inherit;font:inherit;text-align:left;padding:8px;margin:0 -8px;border-radius:9px;cursor:pointer}
+.day:hover{background:var(--accent-soft)}
+.day[aria-pressed="true"]{background:var(--accent-soft);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.day:disabled{cursor:default;opacity:.5}.day:disabled:hover{background:transparent}
+.dname{font-weight:600;font-size:14px;white-space:nowrap}
+.track{display:grid;grid-template-columns:repeat(18,1fr);gap:2px;height:18px}
+.track i{border-radius:3px;background:var(--taken)}
+.track i.f{background:var(--open)}
+.count{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);padding:6px 18px 12px}
+.legend b{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+
+.times{display:flex;flex-wrap:wrap;gap:8px}
+.time{font:500 14px var(--mono);font-variant-numeric:tabular-nums;border:1px solid var(--line);background:var(--surface);color:var(--ink);
+  border-radius:9px;padding:9px 13px;cursor:pointer;display:grid;gap:1px;text-align:left;min-width:86px}
+.time small{font:400 11px var(--body);color:var(--muted)}
+.time:hover{border-color:var(--accent)}
+.time[aria-pressed="true"]{background:var(--grad);border-color:transparent;color:#FFFFFF}
+.time[aria-pressed="true"] small{color:#FFFFFF;opacity:.9}
+.empty{color:var(--muted);font-size:14px;margin:0}
+
+form{display:grid;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.picked{font-family:var(--mono);font-size:14px;padding:11px 13px;border-radius:9px;background:var(--accent-soft);color:var(--ink)}
+.picked.none{background:transparent;border:1px dashed var(--line);color:var(--muted);font-family:var(--body)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:grid;gap:6px;font-size:13px;font-weight:600;min-width:0}
+input,select,textarea{font:400 15px var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:72px}
+.primary{font:600 15px var(--body);background:var(--grad);color:#FFFFFF;border:0;border-radius:10px;padding:12px 22px;cursor:pointer;justify-self:start}
+.primary:disabled{opacity:.4;cursor:not-allowed}
+
+.send{display:grid;gap:12px;background:var(--surface);border:1.5px solid var(--accent);border-radius:14px;padding:20px}
+.send h3{font-family:var(--display);font-weight:600;font-size:20px;margin:0}
+.send p{margin:0;color:var(--muted);font-size:14px;max-width:62ch}
+.field{display:grid;gap:4px}
+.field .row{display:flex;gap:8px;align-items:stretch}
+.field .row > *:first-child{flex:1;min-width:0}
+.field textarea,.field input{font-family:var(--mono);font-size:13px;background:var(--bg)}
+.field textarea{min-height:200px}
+.ghost{font:600 13px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:8px 13px;cursor:pointer;white-space:nowrap}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.actions a{font:600 14px var(--body);color:#FFFFFF;background:var(--grad);text-decoration:none;border-radius:10px;padding:11px 18px}
+.toast{font-size:13px;color:var(--ok);font-weight:600}
+footer{color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer .fl{display:grid;gap:3px}
+footer span{font-family:var(--mono)}
+footer a{color:var(--accent);font-weight:600;text-decoration:none}
+@media (max-width:560px){
+  .weekhead,.day{grid-template-columns:64px 1fr 44px;gap:8px}
+  .dname{font-size:13px}
+  .grid2{grid-template-columns:1fr}
+  .week{padding-inline:14px}
+}
+@media (prefers-reduced-motion:no-preference){.send{animation:rise .25s ease-out}@keyframes rise{from{transform:translateY(6px)}to{transform:none}}}
+</style>
+</head>
+<body>
+
+
+<!--AVAILABILITY-START-->
+<script type="application/json" id="availability">
+{
+  "updated": "2026-10-31T13:00:00+04:00",
+  "email": "ansar.b@cloudmon.ai",
+  "from": "2026-11-01",
+  "to": "2026-11-14",
+  "days": [1,2,3,4,5],
+  "start": "09:00",
+  "end": "18:00",
+  "bufferMin": 15,
+  "minNoticeHours": 24,
+  "maxDays": 14,
+  "busy": [
+    ["2026-11-02T09:30","2026-11-02T10:00"],
+    ["2026-11-03T14:00","2026-11-03T15:00"],
+    ["2026-11-03T16:00","2026-11-03T16:30"],
+    ["2026-11-05T16:00","2026-11-05T17:00"],
+    ["2026-11-06T09:30","2026-11-06T10:30"],
+    ["2026-11-09T09:30","2026-11-09T10:00"],
+    ["2026-11-10T14:00","2026-11-10T15:00"],
+    ["2026-11-10T16:00","2026-11-10T16:30"],
+    ["2026-11-12T11:30","2026-11-12T12:30"],
+    ["2026-11-13T09:30","2026-11-13T10:30"]
+  ]
+}
+</script>
+<!--AVAILABILITY-END-->
+
+<div class="wrap">
+  <header class="band">
+    <canvas id="waves" aria-hidden="true"></canvas>
+    <div class="bandin">
+      <img class="logo" src="logo-white.png" alt="Cloudmon" width="720" height="145">
+      <h1>Book a meeting with Ansar Backer</h1>
+      <p class="role">Vice President, Business Development · Cloudmon</p>
+      <div class="facts">
+        <span class="fact">Mon–Fri · 09:00–18:00 GST</span>
+        <span class="fact">UTC+4 · Dubai</span>
+        <span class="fact">Microsoft Teams or in person</span>
+      </div>
+    </div>
+  </header>
+
+  <section aria-labelledby="s1">
+    <div class="step"><span class="n">01</span><h2 id="s1">Meeting length</h2></div>
+    <div class="seg" role="group" aria-label="Meeting length">
+      <button type="button" id="d30" aria-pressed="true" data-d="30">30 min</button>
+      <button type="button" id="d60" aria-pressed="false" data-d="60">60 min</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="s2">
+    <div class="step"><span class="n">02</span><h2 id="s2">Pick a day</h2><span class="hint">Blue blocks are open. Bookings open 24 hours ahead and up to 14 days out.</span></div>
+    <div class="board" id="board"></div>
+  </section>
+
+  <section aria-labelledby="s3">
+    <div class="step"><span class="n">03</span><h2 id="s3">Pick a time</h2><span class="hint" id="dayhint"></span></div>
+    <div class="times" id="times"></div>
+  </section>
+
+  <section aria-labelledby="s4">
+    <div class="step"><span class="n">04</span><h2 id="s4">Your details</h2></div>
+    <form id="f" novalidate>
+      <div class="picked none" id="picked">Choose a day and time above to continue.</div>
+      <div class="grid2">
+        <label for="name">Full name<input id="name" autocomplete="name" required></label>
+        <label for="company">Company<input id="company" autocomplete="organization" required></label>
+        <label for="email">Work email<input id="email" type="email" autocomplete="email" required></label>
+        <label for="topic">Topic
+          <select id="topic">
+            <option>Introduction call</option>
+            <option>Product demo</option>
+            <option>Partner / channel discussion</option>
+            <option>Proposal or commercial review</option>
+            <option>Existing customer follow-up</option>
+            <option>Other</option>
+          </select>
+        </label>
+      </div>
+      <label for="notes">What would you like to cover? (optional)<textarea id="notes" placeholder="e.g. Monitoring scope, number of devices, current tools"></textarea></label>
+      <p class="empty" id="ferr" hidden></p>
+      <button class="primary" id="go" type="submit" disabled>Prepare my request</button>
+    </form>
+  </section>
+
+  <section id="sendbox" hidden aria-live="polite">
+    <div class="send">
+      <h3>One last step: send this email</h3>
+      <p>Your time is held once your email reaches Ansar. You'll receive a Microsoft Teams invite to confirm the meeting.</p>
+      <div class="field"><span class="weeklabel">To</span><div class="row"><input id="o-to" readonly><button class="ghost" type="button" data-copy="o-to">Copy</button></div></div>
+      <div class="field"><span class="weeklabel">Subject</span><div class="row"><input id="o-subj" readonly><button class="ghost" type="button" data-copy="o-subj">Copy</button></div></div>
+      <div class="field"><span class="weeklabel">Message</span><div class="row"><textarea id="o-body" readonly></textarea></div></div>
+      <div class="actions">
+        <a id="mail" href="#" target="_blank" rel="noopener">Open in my email app</a>
+        <button class="ghost" type="button" id="copyall">Copy subject and message</button>
+        <span class="toast" id="toast" hidden></span>
+      </div>
+      <p>If your email app doesn't open, copy the subject and message into a new email to the address above.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fl">
+      <div>Times are Gulf Standard Time (UTC+4)<span id="localnote"></span>.</div>
+      <div>Availability refreshed <span id="upd"></span>.</div>
+    </div>
+    <a href="https://cloudmon.ai" target="_blank" rel="noopener">cloudmon.ai</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var c = document.getElementById('waves'); if (!c || !c.getContext) return;
+  function draw(){
+    var r = c.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    if (!r.width) return;
+    c.width = r.width * dpr; c.height = r.height * dpr;
+    var g = c.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,r.width,r.height);
+    var W = r.width, H = r.height, x0 = W * (W < 560 ? 0.35 : 0.52);
+    var grad = g.createLinearGradient(x0,0,W,H); grad.addColorStop(0,'rgba(0,191,255,0)'); grad.addColorStop(.35,'rgba(0,191,255,.55)'); grad.addColorStop(1,'rgba(122,77,255,.75)');
+    g.strokeStyle = grad; g.lineWidth = 1;
+    for (var k = 0; k < 26; k++){
+      g.beginPath();
+      for (var x = x0; x <= W + 4; x += 4){
+        var t = (x - x0) / (W - x0);
+        var y = H * (0.08 + k * 0.034) + Math.sin(t * 3.2 + k * 0.22) * H * 0.16 * t + Math.cos(t * 1.7 - k * 0.12) * 10;
+        if (x === x0) g.moveTo(x,y); else g.lineTo(x,y);
+      }
+      g.stroke();
+    }
+  }
+  draw(); var to; window.addEventListener('resize', function(){ clearTimeout(to); to = setTimeout(draw, 120); });
+})();
+</script>
+<script>
+function startApp(){
+  var D = JSON.parse(document.getElementById('availability').textContent);
+  var TZ = 'Asia/Dubai', OFF = '+04:00';
+  var MIN = 6e4, HALF = 18e5, DAY = 864e5;
+  function dt(s){ return new Date(s.length === 16 ? s + ':00' + OFF : s); }
+  function fmt(d, o){ o.timeZone = TZ; return new Intl.DateTimeFormat('en-GB', o).format(d); }
+  function hm(t){ return fmt(new Date(t), {hour:'2-digit', minute:'2-digit', hour12:false}); }
+  function localHm(t){ return new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(t)); }
+  var localZone = ''; try { localZone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch(e){}
+  var otherZone = (-new Date().getTimezoneOffset()) !== 240;
+
+  var buf = (D.bufferMin || 0) * MIN;
+  var busy = D.busy.map(function(b){ return [dt(b[0]).getTime() - buf, dt(b[1]).getTime() + buf]; });
+  var now = Date.now();
+  var earliest = now + D.minNoticeHours * 36e5;
+  var latest = Math.min(now + D.maxDays * DAY, dt(D.to + 'T' + D.end).getTime());
+
+  function free(a, b){
+    if (a < earliest || a > latest) return false;
+    for (var i = 0; i < busy.length; i++) if (a < busy[i][1] && b > busy[i][0]) return false;
+    return true;
+  }
+  function bounds(day){ return [dt(day + 'T' + D.start).getTime(), dt(day + 'T' + D.end).getTime()]; }
+  function starts(day, dur){
+    var s = bounds(day), out = [];
+    for (var t = s[0]; t + dur * MIN <= s[1]; t += HALF) if (free(t, t + dur * MIN)) out.push(t);
+    return out;
+  }
+  function cells(day){
+    var s = bounds(day), out = [];
+    for (var t = s[0]; t < s[1]; t += HALF) out.push(free(t, t + HALF));
+    return out;
+  }
+  function days(){
+    var out = [], d = new Date(D.from + 'T00:00:00Z'), end = new Date(D.to + 'T00:00:00Z');
+    while (d <= end){ if (D.days.indexOf(d.getUTCDay()) > -1) out.push(d.toISOString().slice(0,10)); d = new Date(d.getTime() + DAY); }
+    return out;
+  }
+  function dayLabel(day, long){
+    var d = dt(day + 'T12:00');
+    return long ? fmt(d,{weekday:'long', day:'numeric', month:'long', year:'numeric'}) : fmt(d,{weekday:'short', day:'numeric', month:'short'});
+  }
+  function weekKey(day){
+    var d = new Date(day + 'T00:00:00Z'), wd = (d.getUTCDay() + 6) % 7;
+    return new Date(d.getTime() - wd * DAY).toISOString().slice(0,10);
+  }
+
+  var state = { dur: 30, day: null, start: null };
+  var $ = function(id){ return document.getElementById(id); };
+
+  function renderBoard(){
+    var board = $('board'); board.textContent = '';
+    var list = days(), weeks = {}, order = [];
+    list.forEach(function(d){ var k = weekKey(d); if (!weeks[k]){ weeks[k] = []; order.push(k); } weeks[k].push(d); });
+    var any = false;
+    order.forEach(function(k){
+      var w = document.createElement('div'); w.className = 'week';
+      var head = document.createElement('div'); head.className = 'weekhead';
+      var wl = document.createElement('span'); wl.className = 'weeklabel'; wl.textContent = 'Week of ' + fmt(dt(k + 'T12:00'),{day:'numeric', month:'short'});
+      var ticks = document.createElement('div'); ticks.className = 'ticks'; ticks.setAttribute('aria-hidden','true');
+      [['09',0],['12',33.333],['15',66.667],['18',100]].forEach(function(p){ var s = document.createElement('span'); s.textContent = p[0] + ':00'; s.style.left = p[1] + '%'; ticks.appendChild(s); });
+      head.appendChild(wl); head.appendChild(ticks); head.appendChild(document.createElement('span'));
+      w.appendChild(head);
+      weeks[k].forEach(function(day){
+        var n = starts(day, state.dur).length; if (n) any = true;
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'day'; b.id = 'day-' + day;
+        b.setAttribute('aria-pressed', String(state.day === day)); b.disabled = !n;
+        b.setAttribute('aria-label', dayLabel(day, true) + ', ' + (n ? n + ' start times available' : 'no times available'));
+        var nm = document.createElement('span'); nm.className = 'dname'; nm.textContent = dayLabel(day);
+        var tr = document.createElement('span'); tr.className = 'track';
+        cells(day).forEach(function(f){ var i = document.createElement('i'); if (f) i.className = 'f'; tr.appendChild(i); });
+        var c = document.createElement('span'); c.className = 'count'; c.textContent = n ? n + (n === 1 ? ' slot' : ' slots') : 'Full';
+        b.appendChild(nm); b.appendChild(tr); b.appendChild(c);
+        b.addEventListener('click', function(){ state.day = day; state.start = null; render(); });
+        w.appendChild(b);
+      });
+      board.appendChild(w);
+    });
+    var lg = document.createElement('div'); lg.className = 'legend';
+    lg.innerHTML = '<span><b style="background:var(--open)"></b>Open</span><span><b style="background:var(--taken)"></b>Booked or not bookable yet</span>';
+    board.appendChild(lg);
+    return any;
+  }
+
+  function renderTimes(){
+    var box = $('times'); box.textContent = '';
+    if (!state.day){ $('dayhint').textContent = ''; var p = document.createElement('p'); p.className = 'empty'; p.textContent = 'Choose a day to see open times.'; box.appendChild(p); return; }
+    $('dayhint').textContent = dayLabel(state.day, true) + (otherZone ? ' · GST, with your local time below' : ' · GST');
+    starts(state.day, state.dur).forEach(function(t){
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'time';
+      b.setAttribute('aria-pressed', String(state.start === t));
+      b.textContent = hm(t);
+      if (otherZone){ var s = document.createElement('small'); s.textContent = localHm(t) + ' your time'; b.appendChild(s); }
+      b.addEventListener('click', function(){ state.start = t; render(); $('name').focus({preventScroll:true}); });
+      box.appendChild(b);
+    });
+  }
+
+  function summary(){
+    var t = state.start, e = t + state.dur * MIN;
+    return dayLabel(state.day, true) + ', ' + hm(t) + '–' + hm(e) + ' GST (UTC+4)';
+  }
+
+  function renderPicked(){
+    var p = $('picked');
+    if (state.start == null){ p.className = 'picked none'; p.textContent = 'Choose a day and time above to continue.'; $('go').disabled = true; return; }
+    p.className = 'picked'; p.textContent = summary() + ' · ' + state.dur + ' min';
+    $('go').disabled = false;
+  }
+
+  function render(){
+    var any = renderBoard();
+    if (!any){
+      $('times').innerHTML = '';
+      var p = document.createElement('p'); p.className = 'empty';
+      p.textContent = 'No open times right now. Email ' + D.email + ' and Ansar will suggest a time.';
+      $('times').appendChild(p); $('dayhint').textContent = '';
+    } else renderTimes();
+    renderPicked();
+  }
+
+  function firstDay(){ var l = days(); for (var i = 0; i < l.length; i++) if (starts(l[i], state.dur).length) return l[i]; return null; }
+
+  document.querySelectorAll('.seg button').forEach(function(b){
+    b.addEventListener('click', function(){
+      state.dur = +b.dataset.d;
+      document.querySelectorAll('.seg button').forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+      if (state.start != null && !starts(state.day, state.dur).includes(state.start)) state.start = null;
+      if (state.day && !starts(state.day, state.dur).length) state.day = firstDay();
+      render();
+    });
+  });
+
+  $('f').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var name = $('name').value.trim(), co = $('company').value.trim(), em = $('email').value.trim();
+    var err = $('ferr');
+    if (state.start == null || !name || !co || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){
+      err.hidden = false; err.textContent = 'Add your name, company and a valid work email to continue.'; return;
+    }
+    err.hidden = true;
+    var ref = 'CM-' + Date.now().toString(36).toUpperCase().slice(-6);
+    var t = state.start, e = t + state.dur * MIN;
+    var short = fmt(new Date(t),{weekday:'short', day:'numeric', month:'short', year:'numeric'});
+    var subj = 'Meeting request · ' + short + ' · ' + hm(t) + '–' + hm(e) + ' GST · ' + name + ', ' + co;
+    var lines = [
+      'Hi Ansar,', '',
+      'I would like to book a meeting through your booking page.', '',
+      'Requested time: ' + summary(),
+      'Duration: ' + state.dur + ' minutes',
+      'Name: ' + name,
+      'Company: ' + co,
+      'Email: ' + em,
+      'Topic: ' + $('topic').value
+    ];
+    var notes = $('notes').value.trim();
+    if (notes) lines.push('Notes: ' + notes);
+    if (otherZone && localZone) lines.push('My time zone: ' + localZone + ' (' + localHm(t) + '–' + localHm(e) + ' local)');
+    lines.push('', 'Reference: ' + ref, '', 'Regards,', name);
+    var body = lines.join('\n');
+    $('o-to').value = D.email; $('o-subj').value = subj; $('o-body').value = body;
+    $('mail').href = 'mailto:' + D.email + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(body);
+    $('sendbox').hidden = false;
+    $('sendbox').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
+  });
+
+  function flash(msg){ var t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(flash.t); flash.t = setTimeout(function(){ t.hidden = true; }, 2200); }
+  function copy(text, el){
+    var done = function(){ flash('Copied'); };
+    var fallback = function(){ if (el && el.select){ el.focus(); el.select(); flash('Selected. Press Ctrl+C or Cmd+C'); } };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch(e){ fallback(); }
+  }
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click', function(){ var el = $(b.dataset.copy); copy(el.value, el); });
+  });
+  $('copyall').addEventListener('click', function(){ copy('Subject: ' + $('o-subj').value + '\n\n' + $('o-body').value, $('o-body')); });
+
+  $('upd').textContent = fmt(dt(D.updated),{weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit', hour12:false}) + ' GST';
+  if (otherZone && localZone) $('localnote').textContent = '. Your local zone: ' + localZone;
+
+  state.day = firstDay();
+  render();
+}
+(function(){
+  var el=document.getElementById('availability');
+  var timer=new Promise(function(r){setTimeout(r,4000);});
+  var load=fetch('availability.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():null;}).then(function(x){ if(x){ try{ JSON.parse(x); el.textContent=x; }catch(e){} } }).catch(function(){});
+  Promise.race([load,timer]).then(startApp);
+})();
+</script>
+
+
+</body>
+</html>
